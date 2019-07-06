@@ -51,24 +51,23 @@ def parse_annotation(path):
         img.shape[:2]
         return {
                 'filename': im_path,
-                'width': img[1],
-                'height': img[0],
+                'width': img.shape[1],
+                'height': img.shape[0],
                 'ann': {
                     'bboxes': box_class[:, :4],
                     'labels': box_class[:, 4],
-                    'bboxes_ignore': np.empty,
+                    # 'bboxes_ignore': np.empty([0]),
                 }
             }
 
 def main(argv):
     input, output_fn = argv
 
-    annotations_root_dir = input
     from glob import glob
     collector = []
-    for breed_dir in tqdm.tqdm(os.listdir(input)):
+    for breed_dir in os.listdir(input):
         print(breed_dir)
-        for annotation_file in glob(os.path.join(input, breed_dir, "*.txt")):
+        for annotation_file in tqdm.tqdm(glob(os.path.join(input, breed_dir, "*.txt"))):
             annotation = parse_annotation(annotation_file)
             collector.append(annotation)
     with open(output_fn, "wb") as output_file:

@@ -24,14 +24,14 @@ class BoardDataset(CustomDataset):
 class BoardDatasetTrain(BoardDataset):
     def load_annotations(self, ann_file):
         anna = super(BoardDatasetTrain, self).load_annotations(ann_file)
-        train = len(anna) * train_percentile
+        train = int(len(anna) * train_percentile)
         np.random.shuffle(anna)
         return anna[:train]
 @DATASETS.register_module
 class BoardDatasetTest(BoardDataset):
     def load_annotations(self, ann_file):
         anna = super(BoardDatasetTest, self).load_annotations(ann_file)
-        train = len(anna) * train_percentile
+        train = int(len(anna) * train_percentile)
         np.random.shuffle(anna)
         return anna[train:]
 
