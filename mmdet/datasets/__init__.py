@@ -9,10 +9,10 @@ from .dataset_wrappers import ConcatDataset, RepeatDataset
 from .extra_aug import ExtraAugmentation
 from .registry import DATASETS
 from .builder import build_dataset
-
+from .board_dataset import BoardDataset,BoardDatasetTest,BoardDatasetTrain
 __all__ = [
     'CustomDataset', 'XMLDataset', 'CocoDataset', 'VOCDataset', 'GroupSampler',
     'DistributedGroupSampler', 'build_dataloader', 'to_tensor', 'random_scale',
     'show_ann', 'ConcatDataset', 'RepeatDataset', 'ExtraAugmentation',
-    'WIDERFaceDataset', 'DATASETS', 'build_dataset'
+    'WIDERFaceDataset', 'DATASETS', 'build_dataset' , 'BoardDataset'
 ]
