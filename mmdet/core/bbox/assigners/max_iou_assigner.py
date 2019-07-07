@@ -73,7 +73,7 @@ class MaxIoUAssigner(BaseAssigner):
         if bboxes.shape[0] == 0 or gt_bboxes.shape[0] == 0:
             raise ValueError('No gt or bboxes')
         bboxes = bboxes[:, :4]
-        overlaps = bbox_overlaps(gt_bboxes, bboxes)
+        overlaps = bbox_overlaps(gt_bboxes, bboxes.double())
 
         if (self.ignore_iof_thr > 0) and (gt_bboxes_ignore is not None) and (
                 gt_bboxes_ignore.numel() > 0):
