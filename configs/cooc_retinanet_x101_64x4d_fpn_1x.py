@@ -56,7 +56,7 @@ test_cfg = dict(
     max_per_img=100)
 # dataset settings
 dataset_type = 'BoardCocoDataset'
-data_root = 'data/coco/'
+data_root = 'data/board_dataset/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 data = dict(
@@ -106,7 +106,7 @@ lr_config = dict(
     warmup_iters=500,
     warmup_ratio=1.0 / 3,
     step=[8, 11])
-checkpoint_config = dict(interval=1)
+checkpoint_config = dict(interval=10)
 # yapf:disable
 log_config = dict(
     interval=50,
