@@ -245,6 +245,7 @@ def eval_map(det_results,
     """
     assert len(det_results) == len(gt_bboxes) == len(gt_labels)
     if gt_ignore is not None:
+        print(len(gt_ignore), len(gt_labels))
         assert len(gt_ignore) == len(gt_labels)
         for i in range(len(gt_ignore)):
             assert len(gt_labels[i]) == len(gt_ignore[i])

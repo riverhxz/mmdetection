@@ -17,9 +17,12 @@ random_seed=10001
 @DATASETS.register_module
 class BoardDataset(CustomDataset):
 
+    @property
+    def img_ids(self):
+        return self.getImgIds()
 
     def getImgIds(self):
-        return [f.split("/")[-1] for f in self.img_infos]
+        return list(range(len(self.img_infos)))
 
     def load_annotations(self, ann_file):
         with open(ann_file, 'rb') as f:
