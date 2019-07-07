@@ -109,6 +109,8 @@ mmdet/version.py
 data
 .vscode
 .idea
+work
+.torch
 
 # custom
 *.pkl
