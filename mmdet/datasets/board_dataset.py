@@ -12,27 +12,34 @@ import pickle
 classes = ["hole"]
 class2id = dict(zip(classes, range(len(classes))))
 train_percentile = 0.9
+CLASSES = ('hole')
+random_seed=10001
 @DATASETS.register_module
 class BoardDataset(CustomDataset):
-    CLASSES = ('hole')
+
+
+    def getImgIds(self):
+        return [f.split("/")[-1] for f in self.img_infos]
 
     def load_annotations(self, ann_file):
         with open(ann_file, 'rb') as f:
-            return pickle.loads(f.read())
+            anna = pickle.loads(f.read())
+            np.random.seed(random_seed)
+            np.random.shuffle(anna)
+            return anna
 
 @DATASETS.register_module
 class BoardDatasetTrain(BoardDataset):
     def load_annotations(self, ann_file):
         anna = super(BoardDatasetTrain, self).load_annotations(ann_file)
         train = int(len(anna) * train_percentile)
-        np.random.shuffle(anna)
         return anna[:train]
+
 @DATASETS.register_module
 class BoardDatasetTest(BoardDataset):
     def load_annotations(self, ann_file):
         anna = super(BoardDatasetTest, self).load_annotations(ann_file)
         train = int(len(anna) * train_percentile)
-        np.random.shuffle(anna)
         return anna[train:]
 
 def _parse_annotation(path):
