@@ -52,7 +52,7 @@ def parse_annotation(path, imgid):
                 "iscrowd": 0,
                 "image_id": imgid,
                 "bbox": box[:4].tolist(),
-                "category_id": box[:4].tolist(),
+                "category_id": box[4].tolist(),
                 "id": imgid * 100 + i
             }
             for i, box in enumerate(box_class)
