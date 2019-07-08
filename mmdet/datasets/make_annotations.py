@@ -41,13 +41,13 @@ def parse_annotation(path):
             cc.append([
                   int(left)
                 , int(top)
-                , int(right)
-                , int(bottom)
+                , int(right) - int(left)
+                , int(bottom) - int(top)
                 , class2id[name.lower()]])
 
         box_class = np.array(cc)
 
-        box_class[:, 2:4] = box_class[:, 2:4] - box_class[:, 0:2]
+        # box_class[:, 2:4] = box_class[:, 2:4] - box_class[:, 0:2]
         im_path = path.replace(".txt", ".jpg")
         img = cv2.imread(im_path)
         img.shape[:2]
