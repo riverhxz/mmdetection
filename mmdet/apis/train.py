@@ -167,6 +167,7 @@ def _dist_train(model, dataset, cfg, validate=False):
     runner.register_hook(DistSamplerSeedHook())
     # register eval hooks
     if validate:
+        print("validate")
         val_dataset_cfg = cfg.data.val
         eval_cfg = cfg.get('evaluation', {})
         if isinstance(model.module, RPN):

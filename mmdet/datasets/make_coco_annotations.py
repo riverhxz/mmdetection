@@ -48,7 +48,7 @@ def parse_annotation(path, imgid):
         annotations = [
             {
                 "segmentation": [[]],
-                "area": 0.0,
+                "area": int(box[2] * box[3]),
                 "iscrowd": 0,
                 "image_id": imgid,
                 "bbox": box[:4].tolist(),
@@ -77,7 +77,7 @@ def main(argv):
     input, output_fn = argv
 
     from glob import glob
-    categories = [{"supercategory": "person", "id": 1, "name": "person"}, ]
+    categories = [{"supercategory": "hole", "id": 0, "name": "hole"}, ]
 
     info = {
         "description": "WOODBOARD 2019 Dataset",
@@ -97,8 +97,6 @@ def main(argv):
     annotations = []
     images = []
 
-    # for breed_dir in os.listdir(input):
-    #     print(breed_dir)
     for i,annotation_file in tqdm.tqdm(enumerate(glob(os.path.join(input, "*.txt")))):
         image, anno = parse_annotation(annotation_file,i)
         images.append(image)
