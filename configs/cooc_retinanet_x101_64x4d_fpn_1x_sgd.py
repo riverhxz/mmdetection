@@ -9,7 +9,7 @@ model = dict(
         base_width=4,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
-        frozen_stages=-1,
+        frozen_stages=1,
         style='pytorch'),
     neck=dict(
         type='FPN',
@@ -47,29 +47,25 @@ train_cfg = dict(
         ignore_iof_thr=-1),
     allowed_border=-1,
     pos_weight=-1,
-    debug=True)
+    debug=False)
 test_cfg = dict(
     nms_pre=1000,
     min_bbox_size=0,
     score_thr=0.05,
-    nms=dict(type='nms'
-        , iou_thr=0.0), #TODO  test
-    # nms=dict(type='nms', iou_thr=0.5),
-    max_per_img=10
-    # max_per_img=100 #TODO  test
-)
+    nms=dict(type='nms', iou_thr=0.5),
+    max_per_img=100)
 # dataset settings
-dataset_type = 'BoardDataset'
-data_root = 'data'
+dataset_type = 'BoardCocoDataset'
+data_root = 'data/board_dataset/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 data = dict(
     imgs_per_gpu=2,
     workers_per_gpu=2,
     train=dict(
-        type='BoardDatasetTrain',
-        ann_file=data_root + '/board_anno.pk',
-        img_prefix='.' ,
+        type=dataset_type,
+        ann_file=data_root + 'annotations/train.txt',
+        img_prefix=data_root + 'train/',
         img_scale=(1333, 800),
         img_norm_cfg=img_norm_cfg,
         size_divisor=32,
@@ -78,9 +74,9 @@ data = dict(
         with_crowd=False,
         with_label=True),
     val=dict(
-        type='BoardDatasetTest',
-        ann_file=data_root + '/board_anno.pk',
-        img_prefix='.' ,
+        type=dataset_type,
+        ann_file=data_root + 'annotations/test.txt',
+        img_prefix=data_root + 'test/',
         img_scale=(1333, 800),
         img_norm_cfg=img_norm_cfg,
         size_divisor=32,
@@ -89,9 +85,9 @@ data = dict(
         with_crowd=False,
         with_label=True),
     test=dict(
-        type='BoardDatasetTest',
-        ann_file=data_root + '/board_anno.pk',
-        img_prefix='.' ,
+        type=dataset_type,
+        ann_file=data_root + 'annotations/test.txt',
+        img_prefix=data_root + 'test/',
         img_scale=(1333, 800),
         img_norm_cfg=img_norm_cfg,
         size_divisor=32,
@@ -101,8 +97,8 @@ data = dict(
         with_label=False,
         test_mode=True))
 # optimizer
-# optimizer = dict(type='SGD', lr=0.0001, momentum=0.9, weight_decay=1e-5, nesterov=True)
-optimizer = dict(type='Adam', lr=0.001)
+# optimizer = dict(type='Adam', lr=0.001)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
@@ -121,11 +117,11 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 50
-device_ids = range(8)
+total_epochs = 200
+device_ids = range(4)
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/wood_retinanet_x101_64x4d_fpn_1x'
+work_dir = './work_dirs/retinanet_x101_64x4d_fpn_1x_sgd'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
