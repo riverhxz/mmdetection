@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import pickle
 
-classes = ["hole"]
+classes = ["节"]
 class2id = dict(zip(classes, range(len(classes))))
 
 
@@ -16,6 +16,8 @@ def parse_annotation(path, imgid):
     with open(path) as f:
         lines = f.readlines()
         num, holes = lines[0], lines[1:]
+        if len(holes) == 0:
+            return None,None,False
         cc = []
 
         for line in holes:
@@ -43,7 +45,6 @@ def parse_annotation(path, imgid):
             "flickr_url": f"http://mock.com/{fn}",
             "id": imgid
         }
-
         box_class[:, 2:4] = box_class[:, 2:4] - box_class[:, 0:2]
         annotations = [
             {
@@ -58,7 +59,7 @@ def parse_annotation(path, imgid):
             for i, box in enumerate(box_class)
         ]
 
-        return img, annotations
+        return img, annotations,True
 
 
 def main(argv):
@@ -77,7 +78,7 @@ def main(argv):
     input, output_fn = argv
 
     from glob import glob
-    categories = [{"supercategory": "hole", "id": 0, "name": "hole"}, ]
+    categories = [{"supercategory": "jie", "id": 0, "name": "节"}, ]
 
     info = {
         "description": "WOODBOARD 2019 Dataset",
@@ -98,9 +99,10 @@ def main(argv):
     images = []
 
     for i,annotation_file in tqdm.tqdm(enumerate(glob(os.path.join(input, "*.txt")))):
-        image, anno = parse_annotation(annotation_file,i)
-        images.append(image)
-        annotations.extend(anno)
+        image, anno, success = parse_annotation(annotation_file,i)
+        if success:
+            images.append(image)
+            annotations.extend(anno)
 
     tmp_coco = {
         "info": info,
